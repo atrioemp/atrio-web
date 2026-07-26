@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de borradores — Atrio</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, Arial, sans-serif; background:#f4f5f7; color:#101820; }
+  .login-box {
+    max-width: 360px; margin: 120px auto; background:#fff; padding:36px;
+    border-radius:12px; box-shadow:0 6px 24px rgba(0,0,0,0.08); text-align:center;
+  }
+  .login-box input { width:100%; padding:12px; margin:16px 0; border:1px solid #ddd; border-radius:8px; font-size:15px; }
+  .login-box button, .btn {
+    background:#101820; color:#fff; border:none; padding:12px 20px; border-radius:8px;
+    font-weight:600; cursor:pointer; font-size:14px;
+  }
+  #panel { display:none; max-width:1100px; margin:0 auto; padding:40px 24px; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; }
+  .lista { display:grid; gap:16px; }
+  .card {
+    background:#fff; border:1px solid #e6e9ee; border-radius:12px; padding:20px 24px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  .card h3 { font-size:16px; margin-bottom:4px; }
+  .card p { font-size:13px; color:#6b7580; }
+  .card-actions { display:flex; gap:10px; flex-wrap:wrap; }
+  .card-actions button, .card-actions a {
+    background:#eef1f5; color:#101820; border:none; padding:8px 14px; border-radius:6px;
+    font-size:13px; cursor:pointer; text-decoration:none; font-weight:600;
+  }
+  #vacio { text-align:center; color:#6b7580; padding:60px 0; }
+  #modal {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:10;
+    align-items:center; justify-content:center;
+  }
+  #modal iframe { width:90vw; height:85vh; border:none; border-radius:10px; background:#fff; }
+  #modal .cerrar {
+    position:absolute; top:20px; right:30px; color:#fff; font-size:28px; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+  <div class="login-box" id="loginBox">
+    <h2>Panel de borradores</h2>
+    <p style="font-size:13px; color:#6b7580; margin-top:8px;">Solo tú puedes ver esto</p>
+    <input type="password" id="passInput" placeholder="Contraseña">
+    <br>
+    <button onclick="entrar()">Entrar</button>
+    <p id="errorLogin" style="color:#c0392b; font-size:13px; margin-top:10px;"></p>
+  </div>
+
+  <div id="panel">
+    <header>
+      <h2>Webs generadas automáticamente</h2>
+      <button class="btn" onclick="cargar()">🔄 Actualizar</button>
+    </header>
+    <div class="lista" id="lista"></div>
+    <div id="vacio" style="display:none;">Todavía no hay ninguna solicitud generada.</div>
+  </div>
+
+  <div id="modal">
+    <span class="cerrar" onclick="cerrarModal()">✕</span>
+    <iframe id="frameVista"></iframe>
+  </div>
+
+<script>
+  // ⚠️ Cambia esta contraseña por la tuya antes de publicar
+  const PASSWORD = 'atrio2026';
+
+  function entrar() {
+    const val = document.getElementById('passInput').value;
+    if (val === PASSWORD) {
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+      cargar();
+    } else {
+      document.getElementById('errorLogin').textContent = 'Contraseña incorrecta';
+    }
+  }
+
+  async function cargar() {
+    const res = await fetch('/.netlify/functions/listar-borradores');
+    const items = await res.json();
+    const lista = document.getElementById('lista');
+    const vacio = document.getElementById('vacio');
+    lista.innerHTML = '';
+
+    if (!items.length) {
+      vacio.style.display = 'block';
+      return;
+    }
+    vacio.style.display = 'none';
+
+    items.forEach((item) => {
+      const fecha = new Date(item.fecha).toLocaleString('es-ES');
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <div>
+          <h3>${item.nombre} — ${item.tipo_negocio || 'Sin tipo'}</h3>
+          <p>${item.email || 'sin email'} · Estilo: ${item.estilo || 'no indicado'} · ${fecha}</p>
+        </div>
+        <div class="card-actions">
+          <button onclick="verBorrador('${item.id}')">👁️ Ver</button>
+          <button onclick="descargar('${item.id}', '${item.nombre.replace(/'/g, "")}')">⬇️ Descargar HTML</button>
+        </div>
+      `;
+      lista.appendChild(div);
+    });
+  }
+
+  async function obtenerHtml(id) {
+    const res = await fetch('/.netlify/functions/obtener-borrador?id=' + id);
+    const data = await res.json();
+    return data.html;
+  }
+
+  async function verBorrador(id) {
+    const html = await obtenerHtml(id);
+    const blob = new Blob([html], { type: 'text/html' });
+    document.getElementById('frameVista').src = URL.createObjectURL(blob);
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  async function descargar(id, nombre) {
+    const html = await obtenerHtml(id);
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nombre.toLowerCase().replace(/\s+/g, '-') + '.html';
+    a.click();
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo: Sabores del Barrio — Diseñado por Atrio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', Arial, sans-serif; color: #2b241d; line-height: 1.6; background: #fffaf3; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 700; }
+
+    .demo-banner {
+      background: #1a1310; color: #fff; text-align: center; padding: 14px 20px;
+      font-size: 14px; display: flex; justify-content: center; align-items: center;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .demo-banner strong { color: #e8a33d; }
+    .demo-banner a {
+      color: #1a1310; background: #e8a33d; text-decoration: none; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px; font-size: 13px;
+    }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 48px; background: #fffaf3; border-bottom: 1px solid #f0e4d3;
+    }
+    header h1 { font-size: 24px; color: #2b241d; }
+    nav a { color: #6b5c48; text-decoration: none; margin-left: 24px; font-size: 15px; font-weight: 500; }
+    nav a:hover { color: #e8a33d; }
+
+    #hero {
+      background: linear-gradient(135deg, #2b241d, #4a3a28);
+      color: #fdf6ec; text-align: center; padding: 100px 24px;
+    }
+    #hero h2 { font-size: 38px; max-width: 720px; margin: 0 auto 18px; }
+    #hero p { font-size: 18px; max-width: 580px; margin: 0 auto 30px; color: #e8ddc9; font-family: 'Inter', sans-serif; }
+    .hero-tag {
+      display: inline-block; background: rgba(232,163,61,0.15); color: #e8a33d;
+      font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 24px; border: 1px solid rgba(232,163,61,0.4); font-family: 'Inter', sans-serif;
+    }
+
+    section { padding: 70px 40px; max-width: 1000px; margin: 0 auto; text-align: center; }
+    section h2 { font-size: 30px; margin-bottom: 12px; color: #2b241d; }
+    .section-sub { color: #7a6b56; font-family: 'Inter', sans-serif; margin-bottom: 40px; }
+
+    .grid { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+
+    .product {
+      background: #fff; border-radius: 16px; padding: 0; width: 260px;
+      overflow: hidden; box-shadow: 0 6px 20px rgba(43,36,29,0.06);
+      border: 1px solid #f0e4d3; text-align: left;
+    }
+    .product-thumb {
+      height: 140px; display: flex; align-items: center; justify-content: center;
+      font-size: 46px; background: #fdf1de;
+    }
+    .product-body { padding: 20px; }
+    .product h3 { font-size: 18px; margin-bottom: 6px; color: #2b241d; }
+    .product p { color: #7a6b56; font-size: 14px; font-family: 'Inter', sans-serif; margin-bottom: 14px; }
+    .product .price { font-weight: 700; color: #e8a33d; font-family: 'Inter', sans-serif; font-size: 16px; }
+    .product button {
+      width: 100%; margin-top: 14px; background: #2b241d; color: #fff; border: none;
+      padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+
+    #about { background: #fdf1de; max-width: 100%; }
+    #about .inner { max-width: 640px; margin: 0 auto; }
+    #about p { font-family: 'Inter', sans-serif; color: #5c4d3a; font-size: 16px; }
+
+    #contacto { background: #2b241d; color: #fdf6ec; max-width: 100%; }
+    #contacto h2 { color: #fdf6ec; }
+    #contacto p { font-family: 'Inter', sans-serif; color: #e8ddc9; }
+
+    footer {
+      text-align: center; padding: 24px; background: #1a1310; color: #8a7a63; font-size: 13px;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    🔎 Esto es un <strong>ejemplo ilustrativo</strong> creado por Atrio, no un negocio real.
+    <a href="index.html">← Volver a Atrio</a>
+  </div>
+
+  <header>
+    <h1>Sabores del Barrio</h1>
+    <nav>
+      <a href="#productos">Productos</a>
+      <a href="#sobre-nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section id="hero" style="max-width:100%;">
+    <span class="hero-tag">Panadería artesanal</span>
+    <h2>Sabores auténticos, hechos cada día con cariño</h2>
+    <p>Productos frescos y artesanales, elaborados con ingredientes locales de temporada.</p>
+  </section>
+
+  <section id="productos">
+    <h2>Nuestros Productos</h2>
+    <p class="section-sub">Una selección de lo que hacemos cada mañana.</p>
+    <div class="grid">
+      <div class="product">
+        <div class="product-thumb">🍯</div>
+        <div class="product-body">
+          <h3>Mermelada Casera</h3>
+          <p>Elaborada con fruta de temporada, sin conservantes.</p>
+          <div class="price">6,00 €</div>
+          <button>Añadir al pedido</button>
+        </div>
+      </div>
+      <div class="product">
+        <div class="product-thumb">🍞</div>
+        <div class="product-body">
+          <h3>Pan de Masa Madre</h3>
+          <p>Horneado a diario en horno de leña.</p>
+          <div class="price">3,50 €</div>
+          <button>Añadir al pedido</button>
+        </div>
+      </div>
+      <div class="product">
+        <div class="product-thumb">🍯</div>
+        <div class="product-body">
+          <h3>Miel Ecológica</h3>
+          <p>De productores locales de confianza.</p>
+          <div class="price">8,00 €</div>
+          <button>Añadir al pedido</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre-nosotros">
+    <div class="inner">
+      <h2>Nuestra Historia</h2>
+      <p>Un pequeño negocio familiar dedicado a la repostería y panadería artesanal, con recetas tradicionales y productos de proximidad.</p>
+    </div>
+  </section>
+
+  <section id="contacto" style="max-width:100%;">
+    <h2>Visítanos</h2>
+    <p>Calle Ejemplo, 12 · Madrid</p>
+    <p>Email: contacto@sabordelbarrio.com · Tel: 600 000 000</p>
+  </section>
+
+  <footer>
+    <p>Web de ejemplo diseñada por Atrio &middot; &copy; 2026</p>
+  </footer>
+
+</body>
+</html>
