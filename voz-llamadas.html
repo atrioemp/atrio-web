@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voz para llamadas</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, Arial, sans-serif; background:#101820; color:#fff;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:30px 20px;
+  }
+  h1 { font-size:20px; margin-bottom:6px; }
+  .sub { color:#9aa5b1; font-size:13px; margin-bottom:24px; text-align:center; max-width:520px; }
+  .card {
+    background:#1b2530; border-radius:16px; padding:24px; width:100%; max-width:560px;
+  }
+  textarea {
+    width:100%; min-height:140px; border-radius:10px; border:1px solid #2c3948;
+    background:#0d141c; color:#fff; padding:14px; font-size:17px; resize:vertical;
+    font-family: inherit;
+  }
+  .controls { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  select {
+    flex:1; min-width:140px; padding:10px; border-radius:8px; border:1px solid #2c3948;
+    background:#0d141c; color:#fff; font-size:14px;
+  }
+  .voice-hint { font-size:12px; color:#6b7580; margin-top:6px; }
+  .row { display:flex; gap:10px; align-items:center; margin-top:14px; }
+  .row label { font-size:13px; color:#9aa5b1; width:110px; flex-shrink:0; }
+  input[type=range] { flex:1; }
+  button {
+    border:none; border-radius:10px; padding:16px; font-size:16px; font-weight:700;
+    cursor:pointer; width:100%; margin-top:16px;
+  }
+  #hablar { background:#4da3ff; color:#08131f; }
+  #hablar:active { transform: scale(0.98); }
+  #parar { background:#2c3948; color:#fff; margin-top:8px; }
+  .frases {
+    margin-top:20px; display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .frase-btn {
+    background:#0d141c; border:1px solid #2c3948; color:#cfd6de; padding:8px 12px;
+    border-radius:20px; font-size:13px; cursor:pointer; width:auto; margin:0;
+  }
+
+  /* ===== INSTRUCCIONES DE AUDIO ===== */
+  .info-box {
+    background:#0d141c; border:1px solid #2c3948; border-radius:12px; margin-top:22px; padding:16px 18px;
+  }
+  .info-box summary {
+    cursor:pointer; font-size:14px; font-weight:700; color:#fff; list-style:none;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .info-box summary::-webkit-details-marker { display:none; }
+  .info-box summary::after { content:"+"; color:#4da3ff; font-size:18px; }
+  .info-box[open] summary::after { content:"–"; }
+  .info-box .opcion { margin-top:14px; font-size:13px; color:#cfd6de; line-height:1.6; }
+  .info-box .opcion strong { color:#4da3ff; display:block; margin-bottom:3px; }
+  .info-box .opcion + .opcion { margin-top:12px; padding-top:12px; border-top:1px solid #2c3948; }
+
+  .aviso {
+    margin-top:20px; font-size:12px; color:#6b7580; max-width:560px; text-align:center;
+  }
+</style>
+</head>
+<body>
+
+  <h1>🎙️ Voz para llamadas</h1>
+  <p class="sub">Escribe lo que quieras decir y dale a "Hablar". Pon el teléfono cerca del altavoz del ordenador durante la llamada, o mira abajo cómo enrutar el audio directamente.</p>
+
+  <div class="card">
+    <textarea id="texto" placeholder="Ej: Hola, buenos días, le llamo de parte de un estudio de diseño web, ¿tendría un minuto?" autofocus></textarea>
+
+    <div class="controls">
+      <select id="voz"></select>
+    </div>
+    <p class="voice-hint">Se ordenan primero las voces más naturales disponibles en tu navegador. Chrome o Edge suelen tener las voces en español más realistas.</p>
+
+    <div class="row">
+      <label>Velocidad</label>
+      <input type="range" id="velocidad" min="0.5" max="1.5" step="0.1" value="0.95">
+      <span id="velocidadVal">0.95x</span>
+    </div>
+
+    <div class="row">
+      <label>Tono</label>
+      <input type="range" id="tono" min="0.7" max="1.3" step="0.05" value="1">
+      <span id="tonoVal">1.00</span>
+    </div>
+
+    <button id="hablar">🔊 Hablar</button>
+    <button id="parar">⏹️ Parar</button>
+
+    <div class="frases">
+      <button class="frase-btn" data-frase="Hola, buenos días, ¿hablo con el encargado del negocio?">👋 Saludo inicial</button>
+      <button class="frase-btn" data-frase="Le llamo porque hago páginas web para negocios como el suyo, y he visto que ahora mismo no tienen una.">💻 Presentación</button>
+      <button class="frase-btn" data-frase="Puedo enseñarle un ejemplo gratis de cómo quedaría su web, sin ningún compromiso.">🎁 Oferta demo</button>
+      <button class="frase-btn" data-frase="Entiendo perfectamente, no le quito más tiempo del necesario.">🤝 Empatía</button>
+      <button class="frase-btn" data-frase="Una web sencilla, con lo esencial, ronda entre 50 y 150 euros.">💶 Precio sencilla</button>
+      <button class="frase-btn" data-frase="Una web más completa y profesional, con varias secciones, ronda entre 250 y 600 euros.">💶 Precio profesional</button>
+      <button class="frase-btn" data-frase="En cualquier caso, no se paga nada hasta que usted vea el resultado y esté de acuerdo.">✅ Sin pago por adelantado</button>
+      <button class="frase-btn" data-frase="Lo entiendo, ¿le importa si le dejo mi contacto por si más adelante le interesa?">🚪 Objeción / no interesa</button>
+      <button class="frase-btn" data-frase="Sin problema, ¿prefiere que le llame en otro momento, o le escribo por WhatsApp?">📅 Ahora no puedo</button>
+      <button class="frase-btn" data-frase="¿Le vendría bien que le escriba por WhatsApp o email con más información?">📩 Cierre</button>
+      <button class="frase-btn" data-frase="Muchas gracias por su tiempo, que tenga un buen día.">🙏 Despedida</button>
+    </div>
+
+    <div class="row" style="margin-top:20px; flex-direction:column; align-items:flex-start; gap:8px;">
+      <label style="width:auto;">✏️ Añade tu propia frase rápida:</label>
+      <div style="display:flex; gap:8px; width:100%;">
+        <input id="nuevaFraseTexto" type="text" placeholder="Escribe una frase nueva..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #2c3948; background:#0d141c; color:#fff; font-size:14px;">
+        <button id="agregarFrase" style="width:auto; margin:0; padding:10px 16px; background:#2c3948;">+ Añadir</button>
+      </div>
+    </div>
+
+    <details class="info-box">
+      <summary>📞 Cómo hacer que se oiga en la llamada</summary>
+      <div class="opcion">
+        <strong>Desde el móvil (llamada normal)</strong>
+        Pon el altavoz del ordenador cerca del micrófono del móvil y activa el manos libres. Acércalo cuando quieras que hable, y apártalo un poco cuando escuches a la otra persona para evitar eco.
+      </div>
+      <div class="opcion">
+        <strong>Desde el ordenador (WhatsApp Web, Google Voice, etc.)</strong>
+        En la configuración de audio de la llamada, selecciona la salida de tu ordenador como entrada de micrófono (en Windows esto se hace con un "cable de audio virtual"; en Mac, con una app como BlackHole o Loopback). Así el navegador envía la voz directamente a la llamada, sin necesidad de altavoces.
+      </div>
+    </details>
+  </div>
+
+  <p class="aviso">Nota: recuerda que en muchos casos es recomendable indicar en algún momento de la llamada que se trata de un sistema de voz automatizado, según la normativa de tu país.</p>
+
+<script>
+  const texto = document.getElementById('texto');
+  const vozSelect = document.getElementById('voz');
+  const velocidad = document.getElementById('velocidad');
+  const velocidadVal = document.getElementById('velocidadVal');
+  const tono = document.getElementById('tono');
+  const tonoVal = document.getElementById('tonoVal');
+  const btnHablar = document.getElementById('hablar');
+  const btnParar = document.getElementById('parar');
+
+  let voces = [];
+
+  // Palabras que suelen indicar una voz más natural (motor neuronal) frente a la robótica por defecto
+  const PISTAS_CALIDAD = ['google', 'natural', 'neural', 'enhanced', 'premium', 'online'];
+
+  function puntuarVoz(v) {
+    const nombre = v.name.toLowerCase();
+    let puntos = 0;
+    PISTAS_CALIDAD.forEach((pista) => { if (nombre.includes(pista)) puntos += 1; });
+    if (v.localService === false) puntos += 1; // las voces "online" del navegador suelen sonar mejor
+    return puntos;
+  }
+
+  function cargarVoces() {
+    let todas = speechSynthesis.getVoices();
+    voces = todas.filter(v => v.lang.startsWith('es'));
+    if (voces.length === 0) voces = todas;
+
+    // Las voces más naturales primero
+    voces.sort((a, b) => puntuarVoz(b) - puntuarVoz(a));
+
+    vozSelect.innerHTML = voces.map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`).join('');
+  }
+
+  speechSynthesis.onvoiceschanged = cargarVoces;
+  cargarVoces();
+
+  velocidad.addEventListener('input', () => {
+    velocidadVal.textContent = velocidad.value + 'x';
+  });
+
+  tono.addEventListener('input', () => {
+    tonoVal.textContent = parseFloat(tono.value).toFixed(2);
+  });
+
+  function hablar() {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(texto.value);
+    const vozElegida = voces[vozSelect.value];
+    if (vozElegida) utterance.voice = vozElegida;
+    utterance.rate = parseFloat(velocidad.value);
+    utterance.pitch = parseFloat(tono.value);
+    utterance.lang = 'es-ES';
+    speechSynthesis.speak(utterance);
+  }
+
+  btnHablar.addEventListener('click', hablar);
+  btnParar.addEventListener('click', () => speechSynthesis.cancel());
+
+  document.querySelectorAll('.frase-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      texto.value = btn.dataset.frase;
+      hablar();
+    });
+  });
+
+  // Guardar frases personalizadas nuevas (en memoria durante la sesión)
+  const contenedorFrases = document.querySelector('.frases');
+  const inputNuevaFrase = document.getElementById('nuevaFraseTexto');
+  const btnAgregarFrase = document.getElementById('agregarFrase');
+
+  function crearBotonFrase(texto_frase) {
+    const btn = document.createElement('button');
+    btn.className = 'frase-btn';
+    btn.dataset.frase = texto_frase;
+    btn.textContent = '⭐ ' + (texto_frase.length > 30 ? texto_frase.slice(0, 30) + '…' : texto_frase);
+    btn.addEventListener('click', () => {
+      texto.value = texto_frase;
+      hablar();
+    });
+    contenedorFrases.appendChild(btn);
+  }
+
+  btnAgregarFrase.addEventListener('click', () => {
+    const val = inputNuevaFrase.value.trim();
+    if (!val) return;
+    crearBotonFrase(val);
+    inputNuevaFrase.value = '';
+  });
+
+  inputNuevaFrase.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btnAgregarFrase.click();
+  });
+
+  // Atajo: Ctrl+Enter para hablar rápido
+  texto.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') hablar();
+  });
+</script>
+
+</body>
+</html>
