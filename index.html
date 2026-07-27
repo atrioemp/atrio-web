@@ -167,6 +167,32 @@
 
     #servicios { background: #f3efe3; }
 
+    /* ===== PRECIOS ===== */
+    #precios { background: #fffdf8; max-width: 100%; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 780px; margin: 0 auto; }
+    .price-card {
+      background: #f3efe3; border: 1px solid #ece4d1; border-radius: 18px; padding: 34px 30px;
+      text-align: center; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .price-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(22,33,28,0.08); }
+    .price-card.destacado { background: #16211c; color: #f3efe3; }
+    .price-card h3 { font-size: 20px; margin-bottom: 6px; font-weight: 400; }
+    .price-card .price-range { font-size: 32px; font-family: 'Instrument Serif', serif; color: #a9822f; margin-bottom: 4px; }
+    .price-card.destacado .price-range { color: #dab879; }
+    .price-card .price-note { font-size: 13px; color: #79705a; margin-bottom: 18px; }
+    .price-card.destacado .price-note { color: #b7ae97; }
+    .price-card ul { list-style: none; text-align: left; margin-bottom: 6px; }
+    .price-card ul li {
+      font-size: 14.5px; padding: 8px 0; border-top: 1px solid rgba(0,0,0,0.06);
+      color: #4a4330; display: flex; gap: 8px;
+    }
+    .price-card.destacado ul li { border-top: 1px solid rgba(255,255,255,0.1); color: #dfd9c6; }
+    .price-card ul li::before { content: "✓"; color: #a9822f; font-weight: 700; flex-shrink: 0; }
+    .price-card.destacado ul li::before { color: #dab879; }
+    .pricing-note {
+      text-align: center; max-width: 620px; margin: 34px auto 0; color: #79705a; font-size: 14.5px;
+    }
+
     /* ===== PROCESO ===== */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
     .step { text-align: center; }
@@ -311,6 +337,7 @@
     <a href="index.html" class="logo">Atrio<span>.</span></a>
     <nav>
       <a href="#servicios">Servicios</a>
+      <a href="#precios">Precios</a>
       <a href="#proceso">Proceso</a>
       <a href="#trabajos">Trabajos</a>
       <a href="#sobre-mi">Sobre mí</a>
@@ -370,6 +397,40 @@
           <p>¿Ya tienes una web anticuada? La modernizo y la hago más rápida y atractiva.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- PRECIOS -->
+  <section id="precios" style="max-width:100%;">
+    <div style="max-width:1100px; margin:0 auto;">
+      <span class="section-tag fade">Precios</span>
+      <h2 class="fade">Precios orientativos</h2>
+      <p class="section-sub fade">Cada negocio es distinto, así que el presupuesto final se ajusta hablando de lo que necesitas.</p>
+      <div class="pricing-grid">
+        <div class="price-card fade">
+          <h3>Sencilla</h3>
+          <div class="price-range">50€ – 200€</div>
+          <p class="price-note">Una página con lo esencial</p>
+          <ul>
+            <li>Una página con tus servicios, horarios y contacto</li>
+            <li>Diseño adaptado a móvil</li>
+            <li>Formulario de contacto</li>
+            <li>Publicación con tu dominio incluida</li>
+          </ul>
+        </div>
+        <div class="price-card destacado fade">
+          <h3>Profesional</h3>
+          <div class="price-range">300€ – 600€</div>
+          <p class="price-note">Varias secciones y más a medida</p>
+          <ul>
+            <li>Varias secciones: galería, opiniones, catálogo…</li>
+            <li>Diseño más personalizado para tu marca</li>
+            <li>SEO básico reforzado</li>
+            <li>Ajustes de diseño incluidos tras la entrega</li>
+          </ul>
+        </div>
+      </div>
+      <p class="pricing-note fade">Estos rangos son un punto de partida, no un precio cerrado — el importe final depende de las secciones, el contenido y lo que necesite tu negocio. Lo hablamos antes de que pagues nada.</p>
     </div>
   </section>
 
