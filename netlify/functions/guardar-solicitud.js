@@ -88,10 +88,12 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true, id: data.records?.[0]?.id }),
+      // El frontend (index.html) comprueba "result.success", no "result.ok".
+      // Se mandan ambas claves para que funcione pase lo que pase.
+      body: JSON.stringify({ success: true, ok: true, id: data.records?.[0]?.id }),
     };
   } catch (err) {
     console.error('Error en guardar-solicitud:', err);
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Error interno' }) };
+    return { statusCode: 500, body: JSON.stringify({ success: false, ok: false, error: 'Error interno' }) };
   }
 };
