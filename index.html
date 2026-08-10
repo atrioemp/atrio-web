@@ -827,9 +827,6 @@
       </div>
 
       <form class="contact-form" id="contactForm">
-        <!-- Esta línea conecta el formulario con tu cuenta de Web3Forms -->
-        <input type="hidden" name="access_key" value="9f021511-4a05-489f-8564-bfc97eb034dd">
-
         <label for="nombre" data-i18n="form-nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" required>
 
@@ -888,7 +885,7 @@
   </footer>
 
   <script>
-    // Envía el formulario a Web3Forms sin recargar la página
+    // Envía el formulario a Airtable (vía función de Netlify) sin recargar la página
     const form = document.getElementById('contactForm');
     const status = document.getElementById('form-status');
 
@@ -900,11 +897,11 @@
       const msgOk = currentLang === 'en' ? "Sent! I'll get back to you within 48 hours." : '¡Enviado! Te responderé en menos de 48 horas.';
       const msgError = currentLang === 'en' ? 'Something went wrong. Please try again or email me directly.' : 'Algo falló. Prueba otra vez o escríbeme directamente.';
 
-      // 1) Envía el email normal, como siempre
-      fetch('https://api.web3forms.com/submit', {
+      // 1) Guarda la solicitud en Airtable a través de la función de Netlify
+      fetch('/.netlify/functions/guardar-solicitud', {
         method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosObj)
       })
       .then(res => res.json())
       .then(result => {
